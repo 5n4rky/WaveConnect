@@ -4,24 +4,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PeerChat</title>
+    <title>BDO Brige</title>
    
-    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    
-<div id = 'videos'>
-    <video class="video-player" id = "user-1" autoplay playsinline controls></video>
-    <video class="video-player" id = "user-2" autoplay playsinline controls></video>
+    <form id = "create-form">
+        <input type="text" name="invite_link" required>
+        <input type="submit" value="Create Room">
 
-</div>
-
-
-
-
-
-   
+    </form>
+    <form id="join-form">
+        <input type="text" name="invite_link" required>
+        <input type="submit" name="Join Room">
+    </form>
 </body>
-<script src="agora-rtm-sdk-1.5.1.js"></script>
-<script src="main.js"></script>
+<script>
+    let form = document.getElementById('create-form');
+    let form2 = document.getElementById('join-form');
+
+    form.addEventListener('submit',(e)=>
+    {
+        e.preventDefault();
+        let inviteCode = e.target.invite_link.value
+        window.location = `./views/caller.html?room=${inviteCode}`
+    })
+    form2.addEventListener('submit',(e)=>
+    {
+        e.preventDefault();
+        let inviteCode = e.target.invite_link.value
+        window.location = `./views/reciever.html?room=${inviteCode}`
+    })
+
+</script>
 </html>
