@@ -1,6 +1,7 @@
 let APP_ID = "d25bf915b9e44303928861d87f18f0ce";
 let token = null;
 let localStream;
+let videoTrack;
 let peerConnection;
 let uid = String(Math.floor(Math.random() * 100000));
 let client;
@@ -36,11 +37,14 @@ let createPeerConnection = async (MemberId) => {
 
     if (!localStream) {
         localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+        videoTrack = localStream.getTracks().find(track => track.kind === 'video')
+        videoTrack.enabled = false
         document.getElementById('user-1').srcObject = localStream
     }
 
 
     localStream.getTracks().forEach((track) => {
+        if(track.kind === 'audio')
         peerConnection.addTrack(track, localStream)
     })
 
@@ -106,6 +110,8 @@ let init = async () => {
     client.on('MessageFromPeer', handleMessageFromPeer)
 
     localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+    videoTrack = localStream.getTracks().find(track => track.kind === 'video')
+    videoTrack.enabled = false
     document.getElementById('user-1').srcObject = localStream;
 
 

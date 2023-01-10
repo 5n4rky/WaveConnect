@@ -41,6 +41,7 @@ let createPeerConnection = async (MemberId) => {
 
     peerConnection.ontrack = (event) => {
         event.streams[0].getTracks().forEach((track) => {
+            console.log('!ALERT!the kind of track recieved is ',track.kind)
             remoteStream.addTrack(track)
             
         })

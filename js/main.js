@@ -14,30 +14,10 @@ let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let roomId = urlParams.get('room');
 
-if(!roomId)
-{
+if (!roomId) {
     window.location = '../index.html'
-   console.log('404 not found')
+    console.log('404 not found')
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 const server = {
     iceServers: [
@@ -116,9 +96,8 @@ let handleUserJoined = async (memberId) => {
     createOffer(memberId);
 
 }
-let handleUserLeft = async (memberId) =>
-{
-  document.getElementById('user-2').style.display = 'none';
+let handleUserLeft = async (memberId) => {
+    document.getElementById('user-2').style.display = 'none';
 
 }
 let handleMessageFromPeer = async (message, memberId) => {
@@ -147,7 +126,7 @@ let init = async () => {
 
 
     channel.on('MemberJoined', handleUserJoined);
-    channel.on('MemberLeft',handleUserLeft)
+    channel.on('MemberLeft', handleUserLeft)
     client.on('MessageFromPeer', handleMessageFromPeer);
 
     localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
@@ -164,10 +143,9 @@ let init = async () => {
 
 
 }
-let leaveChannel = async ()=>
-{
+let leaveChannel = async () => {
     await channel.leave()
     await client.logout();
 }
-window.addEventListener('beforeunload',leaveChannel);
+window.addEventListener('beforeunload', leaveChannel);
 init();

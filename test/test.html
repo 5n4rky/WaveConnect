@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <audio class="audio-player" id = "user-1" autoplay controls></audio>
+</body>
+<script>
+    let init = async ()=>
+    {
+        localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+    let audio = document.getElementById('user-1')
+    let videoTrack = localStream.getTracks().find((track) =>{ 
+        
+        
+        
+        if(track.kind === 'video')
+        {
+            console.log('found 1');
+            return true;
+        }
+    
+    
+    
+    
+    
+    })
+    videoTrack.enabled = false;
+    audio.srcObject = localStream;
+    console.log('#video track is',videoTrack);
+    }
+    init();
+
+</script>
+</html>
