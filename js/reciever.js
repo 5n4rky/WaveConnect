@@ -15,7 +15,7 @@ if(!roomId)
     window.location = '../index.html'
    console.log('404 not found')
 }
-
+document.getElementById('roomName').innerText = roomId;
 const server = {
     iceServers: [
         {
