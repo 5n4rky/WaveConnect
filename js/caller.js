@@ -76,9 +76,15 @@ let addAnswer = async (answer) => {
         peerConnection.setRemoteDescription(answer);
     }
 }
+let sendHostInfo = (memberId)=>
+{
+    client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'hostInfo', 'ID': uid }) }, memberId)
+}
 let handleUserJoined = async (memberId) => {
-    console.log('a new user joined the channel', memberId);
     createOffer(memberId);
+    sendHostInfo(memberId);
+
+
 
 }
 let handleMessageFromPeer = async (message, memberId) => {

@@ -5,6 +5,7 @@ let peerConnection;
 let uid = String(Math.floor(Math.random() * 100000));
 let client;
 let channel;
+let hostID;
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
@@ -67,12 +68,35 @@ let createAnswer = async (memberId, offer) => {
     client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'answer', 'answer': answer }) }, memberId);
 
 }
-// if the main user leaves what to do
-// let handleUserLeft = async (memberId) =>
-// {
-//   document.getElementById('user-2').style.display = 'none';
+let updateCard = ()=>
+{
+    document.getElementById('cardImg').src ="https://i.pinimg.com/736x/bc/16/f7/bc16f7c9ad7bd6f1cdf0bf75816f43ff.jpg";
+    document.getElementById('roomName').innerText= "Oops! host left"
+    document.getElementById('user-2').style.display = 'none'
+    document.getElementById('audioplayer').style.display = 'none'
 
-// }
+    let homeButton = document.getElementById('homePage')
+
+    homeButton.style.display = 'block'
+    homeButton.addEventListener('click',()=>
+    {
+        window.location = '../index.html'
+    })
+    
+}
+let handleUserLeft = async (memberId) =>
+{
+  if(memberId === hostID)
+  {
+    await leaveChannel();
+    updateCard();
+   
+   
+
+    
+  }
+
+}
 
 let handleMessageFromPeer = async (message, memberId) => {
     message = JSON.parse(message.text);
@@ -85,6 +109,11 @@ let handleMessageFromPeer = async (message, memberId) => {
         if (peerConnection) {
             peerConnection.addIceCandidate(message.candidate);
         }
+    }
+    
+    if(message.type === 'hostInfo')
+    {
+        hostID = message.ID
     }
 }
 let init = async () => {
@@ -100,11 +129,13 @@ let init = async () => {
    
     
     client.on('MessageFromPeer', handleMessageFromPeer);
+    channel.on('MemberLeft', handleUserLeft)
+
 
    
 
 
-    console.log('permission granted');
+    
 
 
 

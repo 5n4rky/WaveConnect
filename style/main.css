@@ -57,3 +57,7 @@ body,
   background: black;
   cursor: pointer;
 }
+
+#homePage{
+    display: none;
+}
