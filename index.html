@@ -87,12 +87,12 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         let inviteCode = e.target.invite_link.value
-        window.location = `../views/caller.html?room=${inviteCode}`
+        window.location = `./views/caller.html?room=${inviteCode}`
     })
     form2.addEventListener('submit', (e) => {
         e.preventDefault();
         let inviteCode = e.target.invite_link.value
-        window.location = `../views/reciever.html?room=${inviteCode}`
+        window.location = `./views/reciever.html?room=${inviteCode}`
     })
 
 </script>
