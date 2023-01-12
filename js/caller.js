@@ -1,5 +1,6 @@
 let APP_ID = "d25bf915b9e44303928861d87f18f0ce";
 let token = null;
+let inputConfig;
 let localStream;
 let videoTrack;
 let peerConnection;
@@ -10,6 +11,7 @@ let channel;
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let roomId = urlParams.get('room');
+inputConfig = urlParams.get('inputConfig')
 
 if(!roomId)
 {
@@ -27,7 +29,21 @@ const server = {
 }
 
 
-
+let buildLocalStream= async()=>
+{
+    if(inputConfig === 'mic')
+    {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+        document.getElementById('user-1').srcObject = localStream
+    }
+    if(inputConfig === 'systemAudio')
+    {
+        localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+        videoTrack = localStream.getTracks().find(track => track.kind === 'video')
+        videoTrack.enabled = false
+        document.getElementById('user-1').srcObject = localStream
+    }
+}
 let createPeerConnection = async (MemberId) => {
 
 
@@ -36,10 +52,7 @@ let createPeerConnection = async (MemberId) => {
     
 
     if (!localStream) {
-        localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
-        videoTrack = localStream.getTracks().find(track => track.kind === 'video')
-        videoTrack.enabled = false
-        document.getElementById('user-1').srcObject = localStream
+        await buildLocalStream();
     }
 
 
@@ -81,7 +94,7 @@ let sendHostInfo = (memberId)=>
     client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'hostInfo', 'ID': uid }) }, memberId)
 }
 let handleUserJoined = async (memberId) => {
-    createOffer(memberId);
+    await createOffer(memberId);
     sendHostInfo(memberId);
 
 
@@ -115,10 +128,7 @@ let init = async () => {
     
     client.on('MessageFromPeer', handleMessageFromPeer)
 
-    localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
-    videoTrack = localStream.getTracks().find(track => track.kind === 'video')
-    videoTrack.enabled = false
-    document.getElementById('user-1').srcObject = localStream;
+   await buildLocalStream();
 
 
 
