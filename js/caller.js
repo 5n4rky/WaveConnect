@@ -7,6 +7,7 @@ let peerConnection;
 let uid = String(Math.floor(Math.random() * 100000));
 let client;
 let channel;
+let endMeetingButton;
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
@@ -113,15 +114,31 @@ let handleMessageFromPeer = async (message, memberId) => {
         }
     }
 }
+endMeetingButton = document.getElementById('endWave')
 
-let init = async () => {
+let endMeeting = async ()=>
+{ 
+    document.getElementById('endingWave').style.display = 'block'
+     await leaveChannel();
+     window.location  = '../index.html'
 
+}
+
+let attemptLogIn  = async()=>
+{ 
+  
     client = await AgoraRTM.createInstance(APP_ID);
     await client.login({ uid, token });
 
     channel = client.createChannel(roomId); // room id
     await channel.join();
+    document.getElementById('loginAttempt').style.display = 'none'
 
+}
+let init = async () => {
+
+    await attemptLogIn()
+   
 
 
     channel.on('MemberJoined', handleUserJoined)
@@ -138,7 +155,7 @@ let init = async () => {
 
 
 
-
+    endMeetingButton.addEventListener('click', endMeeting)
 
 }
 let leaveChannel = async ()=>
@@ -147,4 +164,5 @@ let leaveChannel = async ()=>
     await client.logout();
 }
 window.addEventListener('beforeunload',leaveChannel);
+
 init();

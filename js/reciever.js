@@ -68,7 +68,7 @@ let createAnswer = async (memberId, offer) => {
     client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'answer', 'answer': answer }) }, memberId);
 
 }
-let updateCard = ()=>
+let updateCard = async ()=>
 {
     document.getElementById('cardImg').src ="https://i.pinimg.com/736x/bc/16/f7/bc16f7c9ad7bd6f1cdf0bf75816f43ff.jpg";
     document.getElementById('roomName').innerText= "Oops! host left"
@@ -89,7 +89,7 @@ let handleUserLeft = async (memberId) =>
   if(memberId === hostID)
   {
     await leaveChannel();
-    updateCard();
+    await updateCard();
    
    
 
@@ -116,16 +116,30 @@ let handleMessageFromPeer = async (message, memberId) => {
         hostID = message.ID
     }
 }
+
+let attemptJoiningChannel = async (roomId)=>
+{
+
+    channel = client.createChannel(roomId); // room id
+  
+   console.log('loading.....')
+    await channel.join();
+    console.log('loading DONE....')
+}
+
+
 let init = async () => {
 
     client = await AgoraRTM.createInstance(APP_ID);
     await client.login({ uid, token });
 
-    channel = client.createChannel(roomId); // room id
-    await channel.join();
+    
+  await attemptJoiningChannel(roomId)
+
+  document.getElementById('loading').style.display = 'none';
 
 
-
+  console.log('loading DONE ..... X2')
    
     
     client.on('MessageFromPeer', handleMessageFromPeer);
@@ -144,11 +158,15 @@ let init = async () => {
 
 
 }
+
+
 let leaveChannel = async ()=>
 {
     await channel.leave()
     await client.logout();
 }
+
+
 window.addEventListener('beforeunload',leaveChannel);
 init();
 
