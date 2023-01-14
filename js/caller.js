@@ -75,7 +75,7 @@ let createPeerConnection = async (MemberId) => {
 
     peerConnection.onicecandidate = async (event) => {
         if (event.candidate) {
-            client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'candidate', 'candidate': event.candidate }) }, MemberId)
+           await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'candidate', 'candidate': event.candidate }) }, MemberId)
 
         }
     }
@@ -89,7 +89,7 @@ let createOffer = async (memberId) => {
 
 
     // sdp - offer
-    client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer }) }, memberId);
+   await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer }) }, memberId);
 
 }
 let addAnswer = async (answer) => {
@@ -97,13 +97,15 @@ let addAnswer = async (answer) => {
         peerConnection.setRemoteDescription(answer);
     }
 }
-let sendHostInfo = (memberId)=>
+let sendHostInfo = async (memberId)=>
 {
-    client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'hostInfo', 'ID': uid }) }, memberId)
+    await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'hostInfo', 'ID': uid , 'waveType' : inputConfig}) }, memberId)
 }
 let handleUserJoined = async (memberId) => {
+    await sendHostInfo(memberId);
     await createOffer(memberId);
-    sendHostInfo(memberId);
+    
+   
 
 
 

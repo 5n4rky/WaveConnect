@@ -1,12 +1,15 @@
 let APP_ID = "d25bf915b9e44303928861d87f18f0ce";
 let token = null;
 let remoteStream;
+let localStream;
 let peerConnection;
 let uid = String(Math.floor(Math.random() * 100000));
 let client;
 let channel;
 let hostID;
 let leaveMeetingButton;
+let isChannelValid = 0;
+let inputConfig;
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let roomId = urlParams.get('room');
@@ -31,6 +34,14 @@ let stopLoader = () => {
     document.getElementById('loader').style.display = 'none'
     document.getElementById('mobile-box').style.display = 'flex'
 }
+let buildLocalStream= async()=>
+{
+    
+    localStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+        
+    
+    
+}
 let createPeerConnection = async (MemberId) => {
 
 
@@ -39,6 +50,16 @@ let createPeerConnection = async (MemberId) => {
     remoteStream = new MediaStream()
     document.getElementById('user-2').srcObject = remoteStream
     document.getElementById('user-2').style.display = 'block'
+
+    if(inputConfig === 'mic')
+    {
+        await buildLocalStream()
+
+        localStream.getTracks().forEach((track) => {
+            if(track.kind === 'audio')
+            peerConnection.addTrack(track, localStream)
+        })
+    }
 
 
 
@@ -118,9 +139,21 @@ let handleMessageFromPeer = async (message, memberId) => {
 
     if (message.type === 'hostInfo') {
         hostID = message.ID
+        inputConfig = message.waveType
     }
 }
+let checkRoomValidity = async ()=>
+{
+    let memberCount = await client.getChannelMemberCount([roomId])
 
+    if(memberCount[roomId] === 1)
+    {
+        window.location = '../index.html'
+    }
+    else
+    isChannelValid = 1
+   
+}
 let attemptJoiningChannel = async (roomId) => {
 
     setTimeout(async () => {
@@ -129,10 +162,25 @@ let attemptJoiningChannel = async (roomId) => {
 
         channel = client.createChannel(roomId); // room id
         await channel.join();
+        
+         await checkRoomValidity()
 
+        if(isChannelValid === 1)
+       { 
+        
         client.on('MessageFromPeer', handleMessageFromPeer);
         channel.on('MemberLeft', handleUserLeft)
         stopLoader();
+
+
+
+
+
+
+
+
+
+        }
     }, 1000)
 
 
