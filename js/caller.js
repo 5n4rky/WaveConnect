@@ -28,7 +28,14 @@ const server = {
         }
     ]
 }
-
+let runLoader = () => {
+    document.getElementById('loader').style.display = 'block'
+    document.getElementById('mobile-box').style.display = 'none'
+}
+let stopLoader = () => {
+    document.getElementById('loader').style.display = 'none'
+    document.getElementById('mobile-box').style.display = 'flex'
+}
 
 let buildLocalStream= async()=>
 {
@@ -52,9 +59,9 @@ let createPeerConnection = async (MemberId) => {
 
     
 
-    if (!localStream) {
-        await buildLocalStream();
-    }
+    // if (!localStream) {
+    //     await buildLocalStream();
+    // }
 
 
     localStream.getTracks().forEach((track) => {
@@ -118,44 +125,44 @@ endMeetingButton = document.getElementById('endWave')
 
 let endMeeting = async ()=>
 { 
-    document.getElementById('endingWave').style.display = 'block'
-     await leaveChannel();
-     window.location  = '../index.html'
+    runLoader()
+    setTimeout(async ()=>
+    {
+        await leaveChannel();
+        window.location  = '../index.html'
+    },1000)
+   
+    
 
 }
 
 let attemptLogIn  = async()=>
 { 
-  
-    client = await AgoraRTM.createInstance(APP_ID);
+    
+    setTimeout(async()=>
+    {
+     client = await AgoraRTM.createInstance(APP_ID);
     await client.login({ uid, token });
 
     channel = client.createChannel(roomId); // room id
     await channel.join();
-    document.getElementById('loginAttempt').style.display = 'none'
+
+    await buildLocalStream();
+    console.log('permission granted');
+    channel.on('MemberJoined', handleUserJoined)
+    
+    client.on('MessageFromPeer', handleMessageFromPeer)
+
+    stopLoader()
+    },1000)
+   
 
 }
 let init = async () => {
 
     await attemptLogIn()
    
-
-
-    channel.on('MemberJoined', handleUserJoined)
-    
-    client.on('MessageFromPeer', handleMessageFromPeer)
-
-   await buildLocalStream();
-
-
-
-    console.log('permission granted');
-
-
-
-
-
-    endMeetingButton.addEventListener('click', endMeeting)
+  endMeetingButton.addEventListener('click', endMeeting)
 
 }
 let leaveChannel = async ()=>

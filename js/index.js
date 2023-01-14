@@ -1,10 +1,23 @@
+let stopLoader = () => {
+    document.getElementById('loader').style.display = 'none'
+    document.getElementById('cardContainer').style.display = 'block'
+}
+
+setTimeout(()=>
+{
+    stopLoader()
+},1500)
+
+let init = async()=>
+{
+    
+    
 let theCard=document.querySelector('#theCard')
 let formBox1=document.querySelector('#formBox1')
 let formBox2=document.querySelector('#formBox2')
 let formBox3=document.querySelector('#formBox3')
 let logoBox=document.querySelector('#logoBox')
-
-//The hover function on the card
+  //The hover function on the card
 const logoBoxRightNull = () =>{
     logoBox.style.right='0px'
 }
@@ -84,3 +97,6 @@ joinMeeting.addEventListener('click', () => {
     let inviteCode = form2.meetingId.value
     window.location = `./views/reciever.html?room=${inviteCode}`
 })
+}
+
+init()
