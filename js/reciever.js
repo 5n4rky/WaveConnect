@@ -1,18 +1,69 @@
-let APP_ID = "d25bf915b9e44303928861d87f18f0ce";
+let APP_ID = "7f7fb91b9abb498bbf6546299524e9fd";
 let token = null;
 let remoteStream;
 let localStream;
+let remoteAudioTrack;
+let localAudioTrack;
 let peerConnection;
 let uid = String(Math.floor(Math.random() * 100000));
 let client;
 let channel;
 let hostID;
-let leaveMeetingButton;
 let isChannelValid = 0;
 let inputConfig;
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let roomId = urlParams.get('room');
+let btnVolume;
+let btnMic;
+let leaveMeetingButton;
+
+
+
+leaveMeetingButton = document.getElementById('endWave')
+btnVolume = document.querySelector('.volume_on')
+btnMic  = document.querySelector('.mic_on')
+
+
+
+
+
+
+let handleVolumeState = async()=>
+{
+    state = btnVolume.innerText
+    if(state === 'volume_up')
+    {
+        btnVolume.innerText = 'volume_off'
+       
+        remoteAudioTrack.enabled = false
+    }
+    else
+    {
+        btnVolume.innerText = 'volume_up'
+        remoteAudioTrack.enabled = true
+    }
+}
+
+
+
+let handleMicState = async()=>
+{
+    state = btnMic.innerText
+    if(state === 'mic')
+    {
+     btnMic.innerText = 'mic_off'
+     localAudioTrack.enabled = false
+    }
+    else
+    {
+       btnMic.innerText = 'mic'
+       localAudioTrack.enabled = true
+       
+    }
+}
+
+
 
 if (!roomId) {
     window.location = '../index.html'
@@ -34,54 +85,69 @@ let stopLoader = () => {
     document.getElementById('loader').style.display = 'none'
     document.getElementById('mobile-box').style.display = 'flex'
 }
-let buildLocalStream= async()=>
-{
+let buildLocalStream = async () => {
+
+    console.log('!Asking for permission')
     
     localStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-        
+    localAudioTrack = localStream.getTracks().find(track => track.kind === 'audio')
+    btnMic.addEventListener('click',handleMicState)
     
-    
+
+
+
 }
 let createPeerConnection = async (MemberId) => {
 
 
     peerConnection = new RTCPeerConnection(server)
-
+    
+    
     remoteStream = new MediaStream()
     document.getElementById('user-2').srcObject = remoteStream
     document.getElementById('user-2').style.display = 'block'
-
-    if(inputConfig === 'mic')
-    {
-        await buildLocalStream()
-
-        localStream.getTracks().forEach((track) => {
-            if(track.kind === 'audio')
-            peerConnection.addTrack(track, localStream)
-        })
-    }
-
-
-
-
-
-
 
     peerConnection.ontrack = (event) => {
         event.streams[0].getTracks().forEach((track) => {
             console.log('!ALERT!the kind of track recieved is ', track.kind)
             remoteStream.addTrack(track)
+            remoteAudioTrack = remoteStream.getTracks().find(track => track.kind === 'audio')
+            btnVolume.addEventListener('click',handleVolumeState);
 
         })
     }
+    
 
 
     peerConnection.onicecandidate = async (event) => {
         if (event.candidate) {
-            client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'candidate', 'candidate': event.candidate }) }, MemberId)
+           await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'candidate', 'candidate': event.candidate }) }, MemberId)
 
         }
     }
+
+    if (inputConfig === 'mic') {
+        
+        
+        await buildLocalStream()
+
+        localStream.getTracks().forEach((track) => {
+            peerConnection.addTrack(track, localStream)
+        })
+    }
+    else
+    {
+        btnMic.style.color = "#d3d3d3"
+        btnMic.innerText = 'mic_off'
+    }
+
+
+
+
+
+
+
+   
 }
 let createAnswer = async (memberId, offer) => {
     await createPeerConnection(memberId);
@@ -92,15 +158,19 @@ let createAnswer = async (memberId, offer) => {
 
     await peerConnection.setLocalDescription(answer);
 
-    client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'answer', 'answer': answer }) }, memberId);
+   await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'answer', 'answer': answer }) }, memberId);
 
 }
 let updateCard = async () => {
     document.getElementById('cardImg').src = "https://i.pinimg.com/736x/bc/16/f7/bc16f7c9ad7bd6f1cdf0bf75816f43ff.jpg";
     document.getElementById('roomName').innerText = "Oops! host left"
-    document.getElementById('user-2').style.display = 'none'
-    document.getElementById('audioplayer').style.display = 'none'
-    document.getElementById('endWave').style.display = 'none'
+
+
+
+    
+    btnMic.style.visibility = 'hidden'
+    btnVolume.style.visibility = 'hidden'
+    leaveMeetingButton.style.visibility = 'hidden'
 
     let homeButton = document.getElementById('homePage')
 
@@ -113,9 +183,12 @@ let updateCard = async () => {
 let handleUserLeft = async (memberId) => {
     if (memberId === hostID) {
         runLoader();
+       
         await leaveChannel();
+       
         await updateCard();
         stopLoader();
+      
 
 
 
@@ -125,67 +198,39 @@ let handleUserLeft = async (memberId) => {
 }
 
 let handleMessageFromPeer = async (message, memberId) => {
+  
+     console.log('message received !! ')
     message = JSON.parse(message.text);
+    console.log('message paarsed' , message)
     if (message.type === 'offer') {
-        createAnswer(memberId, message.offer);
+        console.log("Recived offer !!!")
+        hostID = message.hostID
+        inputConfig = message.waveType
+        await createAnswer(memberId, message.offer);
+        
     }
 
 
     if (message.type === 'candidate') {
         if (peerConnection) {
+            console.log("recieved CANDIDATE !! ")
             peerConnection.addIceCandidate(message.candidate);
         }
     }
 
-    if (message.type === 'hostInfo') {
-        hostID = message.ID
-        inputConfig = message.waveType
-    }
+
 }
-let checkRoomValidity = async ()=>
-{
+let checkRoomValidity = async () => {
     let memberCount = await client.getChannelMemberCount([roomId])
 
-    if(memberCount[roomId] === 1)
-    {
+    if (memberCount[roomId] === 1) {
         window.location = '../index.html'
     }
-    else
-    isChannelValid = 1
    
-}
-let attemptJoiningChannel = async (roomId) => {
-
-    setTimeout(async () => {
-        client = await AgoraRTM.createInstance(APP_ID);
-        await client.login({ uid, token });
-
-        channel = client.createChannel(roomId); // room id
-        await channel.join();
-        
-         await checkRoomValidity()
-
-        if(isChannelValid === 1)
-       { 
-        
-        client.on('MessageFromPeer', handleMessageFromPeer);
-        channel.on('MemberLeft', handleUserLeft)
-        stopLoader();
-
-
-
-
-
-
-
-
-
-        }
-    }, 1000)
-
 
 }
-leaveMeetingButton = document.getElementById('endWave');
+
+
 
 let leaveWave = async () => {
     runLoader()
@@ -194,13 +239,37 @@ let leaveWave = async () => {
         window.location = '../index.html'
     }, 1000)
 }
+/*
+BUTTONS
+*/
+
+
+
+
+
+
 
 let init = async () => {
 
+    client = await AgoraRTM.createInstance(APP_ID);
+    await client.login({ uid, token });
+
+    channel = client.createChannel(roomId); // room id
+    await channel.join();
+     
+    client.on('MessageFromPeer', handleMessageFromPeer);
+    channel.on('MemberLeft', handleUserLeft)
+    leaveMeetingButton.addEventListener('click', leaveWave)
+   
+
+    await checkRoomValidity()
+
+   
+    stopLoader();
 
 
-  await attemptJoiningChannel(roomId)
-  leaveMeetingButton.addEventListener('click', leaveWave)
+
+    
 }
 
 
@@ -211,5 +280,5 @@ let leaveChannel = async () => {
 
 
 window.addEventListener('beforeunload', leaveChannel);
-init();
+init()
 

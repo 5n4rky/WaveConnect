@@ -2,8 +2,9 @@
     margin: 0;
     padding: 0;
   }
-  #cardContainer{
-    display: none;
+  
+  .pointFinger{
+    cursor: pointer;
   }
   body{
     background: linear-gradient(292.93deg, rgba(105, 0, 95, 0.63) 0.89%, rgba(105, 0, 95, 0.63) 26.43%, rgba(255, 255, 255, 0) 99.46%), linear-gradient(114.25deg, #001E3A 40.03%, #001E39 67.74%, rgba(18, 57, 93, 0) 101.22%);

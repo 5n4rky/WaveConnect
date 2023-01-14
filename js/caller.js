@@ -1,13 +1,64 @@
-let APP_ID = "d25bf915b9e44303928861d87f18f0ce";
+let APP_ID = "7f7fb91b9abb498bbf6546299524e9fd";
 let token = null;
 let inputConfig;
 let localStream;
+let remoteStream;
+let localAudioTrack;
+let remoteAudioTrack;
 let videoTrack;
 let peerConnection;
 let uid = String(Math.floor(Math.random() * 100000));
 let client;
 let channel;
 let endMeetingButton;
+
+let btnMic;
+let btnVolume;
+
+
+endMeetingButton = document.getElementById('endWave')
+btnVolume = document.querySelector('.volume_on')
+btnMic  = document.querySelector('.mic_on')
+
+
+
+
+let handleVolumeState = async()=>
+{
+    state = btnVolume.innerText
+    if(state === 'volume_up')
+    {
+        btnVolume.innerText = 'volume_off'
+       
+        remoteAudioTrack.enabled = false
+    }
+    else
+    {
+        btnVolume.innerText = 'volume_up'
+        remoteAudioTrack.enabled = true
+    }
+}
+
+
+
+let handleMicState = async()=>
+{
+    state = btnMic.innerText
+    if(state === 'mic')
+    {
+     btnMic.innerText = 'mic_off'
+     localAudioTrack.enabled = false
+    }
+    else
+    {
+       btnMic.innerText = 'mic'
+       localAudioTrack.enabled = true
+       
+    }
+}
+
+
+
 
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
@@ -40,17 +91,28 @@ let stopLoader = () => {
 let buildLocalStream= async()=>
 {
     if(inputConfig === 'mic')
-    {
+    { 
+        
         localStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-        document.getElementById('user-1').srcObject = localStream
+        
+        remoteStream = new MediaStream()
+        document.getElementById('user-1').srcObject = remoteStream
+        
     }
     if(inputConfig === 'systemAudio')
-    {
+    { 
+        btnVolume.style.color = '#d3d3d3'
+        btnVolume.innerText = 'volume_off'
+
         localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true })
+
         videoTrack = localStream.getTracks().find(track => track.kind === 'video')
         videoTrack.enabled = false
-        document.getElementById('user-1').srcObject = localStream
+        
     }
+    
+    localAudioTrack = localStream.getTracks().find(track=>track.kind ==='audio')
+    btnMic.addEventListener('click',handleMicState)
 }
 let createPeerConnection = async (MemberId) => {
 
@@ -63,11 +125,23 @@ let createPeerConnection = async (MemberId) => {
     //     await buildLocalStream();
     // }
 
-
+    
     localStream.getTracks().forEach((track) => {
         if(track.kind === 'audio')
         peerConnection.addTrack(track, localStream)
     })
+
+    peerConnection.ontrack = (event) => {
+        event.streams[0].getTracks().forEach((track) => {
+            console.log('!ALERT!the kind of track recieved is ', track.kind)
+            remoteStream.addTrack(track)
+            remoteAudioTrack = remoteStream.getTracks().find(track => track.kind === 'audio')
+            btnVolume.addEventListener('click',handleVolumeState);
+            
+            
+
+        })
+    }
 
 
     
@@ -87,23 +161,30 @@ let createOffer = async (memberId) => {
     let offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
 
-
+console.log("sending offer", offer )
     // sdp - offer
-   await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer }) }, memberId);
-
+  await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer, 'hostID': uid , 'waveType' : inputConfig }) }, memberId);
+ 
 }
 let addAnswer = async (answer) => {
     if (!peerConnection.currentRemoteDescription) {
         peerConnection.setRemoteDescription(answer);
     }
 }
-let sendHostInfo = async (memberId)=>
-{
-    await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'hostInfo', 'ID': uid , 'waveType' : inputConfig}) }, memberId)
-}
+
 let handleUserJoined = async (memberId) => {
-    await sendHostInfo(memberId);
+
+    
+
+    
+    
     await createOffer(memberId);
+    //await sendHostInfo(memberId);
+
+
+    
+    
+   
     
    
 
@@ -123,7 +204,7 @@ let handleMessageFromPeer = async (message, memberId) => {
         }
     }
 }
-endMeetingButton = document.getElementById('endWave')
+
 
 let endMeeting = async ()=>
 { 
@@ -138,33 +219,26 @@ let endMeeting = async ()=>
 
 }
 
-let attemptLogIn  = async()=>
-{ 
-    
-    setTimeout(async()=>
-    {
-     client = await AgoraRTM.createInstance(APP_ID);
+let init = async () => {
+
+    client = await AgoraRTM.createInstance(APP_ID);
     await client.login({ uid, token });
 
     channel = client.createChannel(roomId); // room id
     await channel.join();
-
-    await buildLocalStream();
-    console.log('permission granted');
     channel.on('MemberJoined', handleUserJoined)
     
     client.on('MessageFromPeer', handleMessageFromPeer)
+    endMeetingButton.addEventListener('click', endMeeting)
+    await buildLocalStream();
+
+
+    console.log('permission granted');
+   
 
     stopLoader()
-    },1000)
    
-
-}
-let init = async () => {
-
-    await attemptLogIn()
-   
-  endMeetingButton.addEventListener('click', endMeeting)
+  
 
 }
 let leaveChannel = async ()=>

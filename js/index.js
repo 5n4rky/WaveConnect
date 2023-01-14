@@ -1,16 +1,8 @@
-let stopLoader = () => {
-    document.getElementById('loader').style.display = 'none'
-    document.getElementById('cardContainer').style.display = 'block'
-}
 
-setTimeout(()=>
-{
-    stopLoader()
-},1500)
 
 let init = async()=>
 {
-    
+        
     
 let theCard=document.querySelector('#theCard')
 let formBox1=document.querySelector('#formBox1')
