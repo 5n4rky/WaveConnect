@@ -9,6 +9,7 @@ let uid = String(Math.floor(Math.random() * 100000));
 let client;
 let channel;
 let hostID;
+let roomName;
 let isChannelValid = 0;
 let inputConfig;
 let queryString = window.location.search;
@@ -69,7 +70,7 @@ if (!roomId) {
     window.location = '../index.html'
     console.log('404 not found')
 }
-document.getElementById('roomName').innerText = roomId;
+document.getElementById('roomID').innerText = roomId;
 const server = {
     iceServers: [
         {
@@ -87,7 +88,7 @@ let stopLoader = () => {
 }
 let buildLocalStream = async () => {
 
-    console.log('!Asking for permission')
+   
     
     localStream = await navigator.mediaDevices.getUserMedia({ video: false, audio: true })
     localAudioTrack = localStream.getTracks().find(track => track.kind === 'audio')
@@ -109,7 +110,7 @@ let createPeerConnection = async (MemberId) => {
 
     peerConnection.ontrack = (event) => {
         event.streams[0].getTracks().forEach((track) => {
-            console.log('!ALERT!the kind of track recieved is ', track.kind)
+            
             remoteStream.addTrack(track)
             remoteAudioTrack = remoteStream.getTracks().find(track => track.kind === 'audio')
             btnVolume.addEventListener('click',handleVolumeState);
@@ -127,13 +128,18 @@ let createPeerConnection = async (MemberId) => {
     }
 
     if (inputConfig === 'mic') {
-        
+        try{
         
         await buildLocalStream()
 
         localStream.getTracks().forEach((track) => {
             peerConnection.addTrack(track, localStream)
         })
+    }
+    catch(error)
+    {
+        window.alert(error+' =>refresh or grant proper permission')
+    }
     }
     else
     {
@@ -199,11 +205,13 @@ let handleUserLeft = async (memberId) => {
 
 let handleMessageFromPeer = async (message, memberId) => {
   
-     console.log('message received !! ')
+    
     message = JSON.parse(message.text);
-    console.log('message paarsed' , message)
+    
     if (message.type === 'offer') {
-        console.log("Recived offer !!!")
+        
+        roomName = message.roomName
+        document.getElementById('roomName').innerText = roomName;
         hostID = message.hostID
         inputConfig = message.waveType
         await createAnswer(memberId, message.offer);
@@ -213,7 +221,7 @@ let handleMessageFromPeer = async (message, memberId) => {
 
     if (message.type === 'candidate') {
         if (peerConnection) {
-            console.log("recieved CANDIDATE !! ")
+            
             peerConnection.addIceCandidate(message.candidate);
         }
     }
@@ -251,6 +259,7 @@ BUTTONS
 
 let init = async () => {
 
+     try{
     client = await AgoraRTM.createInstance(APP_ID);
     await client.login({ uid, token });
 
@@ -266,6 +275,11 @@ let init = async () => {
 
    
     stopLoader();
+     }
+     catch(error)
+     {
+        window.alert(error+' => please refresh')
+     }
 
 
 

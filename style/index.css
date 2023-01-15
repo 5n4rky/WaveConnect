@@ -1,385 +1,444 @@
+:root {
+  --bgOne: #441f65;
+  --bgTwo: rgb(17, 30, 66);
+  --bgThree: #300642;
+  --white: #ffffff;
+}
+
 *{
-    margin: 0;
-    padding: 0;
-  }
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background: linear-gradient(292.93deg, rgba(105, 0, 95, 0.63) 0.89%, rgba(105, 0, 95, 0.63) 26.43%, rgba(255, 255, 255, 0) 99.46%), linear-gradient(114.25deg, #001E3A 40.03%, #001E39 67.74%, rgba(18, 57, 93, 0) 101.22%);
+  min-height: 99vh;
+  padding-top: 7vh;
+  padding-left: 25vw;
+  box-sizing: border-box;
+}
+
+#theCard{
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  width: 950px;
+  height: 450px;
+  align-items: center;
+
+}
+
+.formBox{
+  width: 400px;
+  height: 400px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
   
-  .pointFinger{
-    cursor: pointer;
-  }
-  body{
-    background: linear-gradient(292.93deg, rgba(105, 0, 95, 0.63) 0.89%, rgba(105, 0, 95, 0.63) 26.43%, rgba(255, 255, 255, 0) 99.46%), linear-gradient(114.25deg, #001E3A 40.03%, #001E39 67.74%, rgba(18, 57, 93, 0) 101.22%);
-    min-height: 99vh;
-    padding-top: 7vh;
-    padding-left: 25vw;
-    box-sizing: border-box;
-  }
-  
-  #theCard{
-    margin: auto;
+}
+
+#formBox1{
+  position: relative;
+  z-index: 10;
+  background-color: var(--bgOne);
+
+  display: flex;
+  flex-direction: column;
+}
+
+#createTeamBtn{
+  margin: 10px;
+  margin-top: 52px;
+}
+
+#joinTeamBtn{
+  margin-top: 86px;
+}
+
+#formBox2{
+  background-color: var(--bgTwo);
+  position: absolute;
+  z-index: 1;
+
+}
+
+#formBox3{
+  background-color: var(--bgThree);
+  position: absolute;
+  z-index: 1;
+}
+
+#logoBox{
+  background-color: cyan;
+  background: url('../images/milad-fakurian-Fw6QxwvSqTQ-unsplash.jpg');
+  background-size: cover;
+  width: 450px;
+  height: 450px;
+  border-radius: 1px;
+
+  position: relative;
+  box-shadow: 0 15px 25px rgba(0,0,0,0.6);
+  transition: all 0.6s cubic-bezier(0.61, 0.01, 0.43, 1.23);
+  right: 340px;
+  z-index: 500;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#logoBox img{
+  position: relative;
+  bottom: 20px;
+}
+
+/*********
+Styling the FromBoxes
+*********/
+
+/* Card1 */
+
+.teamDiv{
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    width: 950px;
-    height: 450px;
-    align-items: center;
-  
-  }
-  
-  .formBox{
-    width: 400px;
-    height: 400px;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    
-  }
-  
-  #formBox1{
-    position: relative;
-    z-index: 10;
-    background-color: #673692;
-  
-    display: flex;
-    flex-direction: column;
-  }
-  
-  #createTeamBtn{
-    margin-top: 70px;
-  }
-  
-  #joinTeamBtn{
-    margin-top: 80px;
-  }
-  
-  #formBox2{
-    background-color: rgb(15, 29, 65);
-    position: absolute;
-    z-index: 1;
-  
-  }
-  
-  #formBox3{
-    background-color: rgb(15, 29, 65);
-    position: absolute;
-    z-index: 1;
-  }
-  
-  #logoBox{
-    background-color: cyan;
-    background: url('../images/milad-fakurian-Fw6QxwvSqTQ-unsplash.jpg');
-    background-size: cover;
-    width: 450px;
-    height: 450px;
-    border-radius: 1px;
-  
-    position: relative;
-    box-shadow: 0 15px 25px rgba(0,0,0,0.6);
-    transition: all 0.6s cubic-bezier(0.61, 0.01, 0.43, 1.23);
-    right: 340px;
-    z-index: 500;
-  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  #logoBox img{
-    position: relative;
-    bottom: 20px;
-  }
-  
-  /*********
-  Styling the FromBoxes
-  *********/
-  
-  /* Card1 */
-  
-  .teamDiv{
-      width: 100%;
-      display: flex;
-      height: 100px;
-      align-items: center;
-      justify-content: center;
-      margin: 1px;
-      padding: 1px;
-  }
-  
-  .breakingLine{
-      width: 100%;
-      height: 1px;
-      border-bottom: 1px solid black;
-  }
-  
-  .introText1{
-      font-size: 1.3rem;
-      text-align: center;
-      padding: 10px;
-  }
-  
-  
-  /*button-89*/
-  #createTeamBtn{
-    padding: 1rem 2.1rem;
-    font-weight: 600;
-    font-size: 25px;
-    box-shadow: 0 10px 18px rgba(0,0,0,0.5);
-  }
-  
-  #joinTeamBtn{
-    padding: 1rem 2rem;
-    font-weight: 600;
-    font-size: 22px;
-    box-shadow: 0 10px 18px rgba(0,0,0,0.45);
-  }
-  
-  .bn37 {
-    display: inline-flex;
+    height: 100px;
     align-items: center;
     justify-content: center;
-    font-family: "Poppins", sans-serif;
-    text-align: center;
-    text-decoration: none;
-    color: #fff;
-    backface-visibility: hidden;
-    border: 0.3rem solid transparent;
-    border-radius: 3rem;
-  }
-  
-  .bn37 {
-    border-color: transparent;
-    background-color: #fff;
-    color: #000;
-    transition: all 0.3s cubic-bezier(0.235, 0, 0.05, 0.95);
-  }
-    
-  .bn37:hover {
-    background-color: #ab79d6;
-    color: #fff;
-    transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0) !important;
-  }
-  
-  
-  /******
-      FormBox2 and 3
-  ******/
-  
-  .radio-btns{
-    color: #fff;
-    font-size: 16px;
-    margin: 3px;
+    margin: 1px;
     padding: 1px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+}
+
+.headerLine{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.headerLine img{
+  width: 90px;
+  margin: 5px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.introText1{
+  font-size: 2.1rem;
+  text-align: center;
+  color: #fff;
+  margin: 15px;
+  padding: 10px;
+  font-family: 'Oooh Baby', cursive;
+
+  margin: auto;
+  position: relative;
+  left: 5px;
+}
+
+
+.breakingLine{
+    width: 100%;
+    position: absolute;
+    top: 215px;
+}
+.theBrokenLine{
+  width: 71%;
+  margin: auto;
+  border-bottom: 2px solid rgba(39, 6, 49, 0.2 );
+}
+
+#createTeamBtn{
+  padding: 1rem 2.1rem;
+  font-weight: 600;
+  font-family: 'Arvo', serif;
+  font-size: 25px;
+  box-shadow: 0 10px 18px rgba(0,0,0,0.5);
+}
+#createTeamBtn:hover{
+  background-color: var(--bgTwo) ;
+}
+
+/*Glowing Text Effect*/
+
+.glowing-text {
+  color: #fff;
+  -webkit-animation: glowing-text 1.15s ease-in-out infinite alternate;
+  -moz-animation: glowing-text 1.15s ease-in-out infinite alternate;
+  animation: glowing-text 1.15s ease-in-out infinite alternate;
+}
+@-webkit-keyframes glowing-text {
+  0% {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.45), 0 0 10px rgba(255, 255, 255, 0.4), 0 0 15px #2e00e676, 0 0 20px #6400e670, 0 0 25px #c400e66e, 0 0 30px #e200e66f, 0 0 35px #d700e67e;
+}
   
+  100% {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.432), 0 0 14px #ff4da66c, 0 0 18px #ff4da671, 0 0 24px #ff4da67e, 0 0 27px #ff4da67c, 0 0 32px #ff4da667, 0 0 37px #ff4da64f;
   }
+}
+
+
+
+#joinTeamBtn{
+  padding: 1rem 2rem;
+  font-weight: 600;
+  font-family: 'Arvo', serif;
+  font-size: 22px;
+  box-shadow: 0 10px 18px rgba(0,0,0,0.45);
+}
+#joinTeamBtn:hover{
+  background-color: var(--bgThree);
+}
+
+.bn37 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Poppins", sans-serif;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  backface-visibility: hidden;
+  border: 0.3rem solid transparent;
+  border-radius: 3rem;
+}
+
+.bn37 {
+  border-color: transparent;
+  background-color: #fff;
+  color: #000;
+  transition: all 0.3s cubic-bezier(0.235, 0, 0.05, 0.95);
+}
   
-  .radio-btns label{
+.bn37:hover {
+  color: #fff;
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0) !important;
+}
+
+.pointerOnHover:hover{
+  cursor: pointer;
+}
+/******
+    FormBox2 and 3
+******/
+
+.radio-btns{
+  color: #fff;
+  font-size: 16px;
+  margin: 3px;
+  padding: 1px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+
+.radio-btns label{
+  padding: 5px;
+}
+
+.backButton{
     padding: 5px;
+    margin: 1px;
+    position: relative;
+    width: 50px;
+    bottom: 12px;
+    right: 15px;
+    background-color: transparent;
+    color: #03e9f4;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: all 0.35s ease-in;
+}
+
+.backButton:hover{
+    border-color: #03e9f4;
+    color: #fff;
+}
+
+/*****
+    Form CSS
+*****/
+
+.login-box {
+    padding: 30px;
+    background: rgba(0,0,0,.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 4px;
   }
   
-  .backButton{
-      padding: 5px;
-      margin: 1px;
-      position: relative;
-      width: 50px;
-      bottom: 12px;
-      right: 15px;
-      background-color: transparent;
-      color: #03e9f4;
-      border-radius: 5px;
-      border: 1px solid transparent;
-      transition: all 0.35s ease-in;
+  .login-box h2 {
+    margin: 3px;
+    margin-bottom: 14px;
+    padding: 2px;
+    color: #fff;
+    text-align: center;
   }
   
-  .backButton:hover{
-      border-color: #03e9f4;
-      color: #fff;
+  .login-box .user-box {
+    position: relative;
   }
   
+  .login-box .user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+  }
+  .login-box .user-box label {
+    position: absolute;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
+  }
+  
+  .login-box .user-box input:focus ~ label,
+  .login-box .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #03e9f4;
+    font-size: 12px;
+  }
+  
+  .login-box form a {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #03e9f4;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px
+  }
+  
+  .login-box a:hover {
+    background: #03e9f4;
+    color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 5px #03e9f4,
+                0 0 25px #03e9f4,
+                0 0 50px #03e9f4,
+                0 0 100px #03e9f4;
+  }
+  
+  .login-box a span {
+    position: absolute;
+    display: block;
+  }
+  
+  .login-box a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #03e9f4);
+    animation: btn-anim1 2s linear infinite;
+  }
+  
+  @keyframes btn-anim1 {
+    0% {
+      left: -100%;
+    }
+    50%,100% {
+      left: 100%;
+    }
+  }
+  
+  .login-box a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #03e9f4);
+    animation: btn-anim2 2s linear infinite;
+    animation-delay: .5s
+  }
+  
+  @keyframes btn-anim2 {
+    0% {
+      top: -100%;
+    }
+    50%,100% {
+      top: 100%;
+    }
+  }
+  
+  .login-box a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #03e9f4);
+    animation: btn-anim3 2s linear infinite;
+    animation-delay: 1s
+  }
+  
+  @keyframes btn-anim3 {
+    0% {
+      right: -100%;
+    }
+    50%,100% {
+      right: 100%;
+    }
+  }
+  
+  .login-box a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #03e9f4);
+    animation: btn-anim4 2s linear infinite;
+    animation-delay: 1.5s
+  }
+  
+  @keyframes btn-anim4 {
+    0% {
+      bottom: -100%;
+    }
+    50%,100% {
+      bottom: 100%;
+    }
+  }
+
+
+
+
   /*****
-      Form CSS
+  Media Query
   *****/
   
-  .login-box {
-      padding: 30px;
-      background: rgba(0,0,0,.5);
-      box-sizing: border-box;
-      box-shadow: 0 15px 25px rgba(0,0,0,.6);
-      border-radius: 4px;
-    }
-    
-    .login-box h2 {
-      margin: 3px;
-      margin-bottom: 14px;
-      padding: 2px;
-      color: #fff;
-      text-align: center;
-    }
-    
-    .login-box .user-box {
-      position: relative;
-    }
-    
-    .login-box .user-box input {
-      width: 100%;
-      padding: 10px 0;
-      font-size: 16px;
-      color: #fff;
-      margin-bottom: 30px;
-      border: none;
-      border-bottom: 1px solid #fff;
-      outline: none;
-      background: transparent;
-    }
-    .login-box .user-box label {
-      position: absolute;
-      top:0;
-      left: 0;
-      padding: 10px 0;
-      font-size: 16px;
-      color: #fff;
-      pointer-events: none;
-      transition: .5s;
-    }
-    
-    .login-box .user-box input:focus ~ label,
-    .login-box .user-box input:valid ~ label {
-      top: -20px;
-      left: 0;
-      color: #03e9f4;
-      font-size: 12px;
-    }
-    
-    .login-box form a {
-      position: relative;
-      display: inline-block;
-      padding: 10px 20px;
-      color: #03e9f4;
-      font-size: 16px;
-      text-decoration: none;
-      text-transform: uppercase;
-      overflow: hidden;
-      transition: .5s;
-      margin-top: 40px;
-      letter-spacing: 4px
-    }
-    
-    .login-box a:hover {
-      background: #03e9f4;
-      color: #fff;
-      border-radius: 4px;
-      box-shadow: 0 0 5px #03e9f4,
-                  0 0 25px #03e9f4,
-                  0 0 50px #03e9f4,
-                  0 0 100px #03e9f4;
-    }
-    
-    .login-box a span {
-      position: absolute;
-      display: block;
-    }
-    
-    .login-box a span:nth-child(1) {
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #03e9f4);
-      animation: btn-anim1 1s linear infinite;
-    }
-    
-    @keyframes btn-anim1 {
-      0% {
-        left: -100%;
-      }
-      50%,100% {
-        left: 100%;
-      }
-    }
-    
-    .login-box a span:nth-child(2) {
-      top: -100%;
-      right: 0;
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(180deg, transparent, #03e9f4);
-      animation: btn-anim2 1s linear infinite;
-      animation-delay: .25s
-    }
-    
-    @keyframes btn-anim2 {
-      0% {
-        top: -100%;
-      }
-      50%,100% {
-        top: 100%;
-      }
-    }
-    
-    .login-box a span:nth-child(3) {
-      bottom: 0;
-      right: -100%;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(270deg, transparent, #03e9f4);
-      animation: btn-anim3 1s linear infinite;
-      animation-delay: .5s
-    }
-    
-    @keyframes btn-anim3 {
-      0% {
-        right: -100%;
-      }
-      50%,100% {
-        right: 100%;
-      }
-    }
-    
-    .login-box a span:nth-child(4) {
-      bottom: -100%;
-      left: 0;
-      width: 2px;
-      height: 100%;
-      background: linear-gradient(360deg, transparent, #03e9f4);
-      animation: btn-anim4 1s linear infinite;
-      animation-delay: .75s
-    }
-    
-    @keyframes btn-anim4 {
-      0% {
-        bottom: -100%;
-      }
-      50%,100% {
-        bottom: 100%;
-      }
-    }
-  
-  
-  
-  
-    /*****
-    Media Query
-    *****/
-    
-    @media only screen and (max-width: 1000px){
-  
-    body{
-     padding: 1vw;
-    }
-  
-    #theCard{
-      width: 90vw;
-    }
-  
-    #logoBox{
-      display: none;
-    }
-  
-    .formBox{
-      width: 90vw
-    }
-  
-  
-  
-  
-    }
+  @media only screen and (max-width: 990px){
+
+  body{
+   padding: 1vw;
+  }
+
+  #theCard{
+    width: 90vw;
+  }
+
+  #logoBox{
+    display: none;
+  }
+
+  .formBox{
+    width: 90vw
+  }
+
+  .hiddenOnMobile{
+    visibility: hidden;
+  }
+  }

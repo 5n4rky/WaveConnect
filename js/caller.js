@@ -63,6 +63,7 @@ let handleMicState = async()=>
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 let roomId = urlParams.get('room');
+let roomName = urlParams.get('name')
 inputConfig = urlParams.get('inputConfig')
 
 if(!roomId)
@@ -70,7 +71,8 @@ if(!roomId)
     window.location = '../index.html'
    console.log('404 not found')
 }
-document.getElementById('roomName').innerText = roomId;
+document.getElementById('roomName').innerText = roomName;
+document.getElementById('roomID').innerText = roomId;
 
 const server = {
     iceServers: [
@@ -89,7 +91,9 @@ let stopLoader = () => {
 }
 
 let buildLocalStream= async()=>
-{
+{ 
+
+
     if(inputConfig === 'mic')
     { 
         
@@ -113,7 +117,11 @@ let buildLocalStream= async()=>
     
     localAudioTrack = localStream.getTracks().find(track=>track.kind ==='audio')
     btnMic.addEventListener('click',handleMicState)
+
 }
+
+
+
 let createPeerConnection = async (MemberId) => {
 
 
@@ -121,9 +129,7 @@ let createPeerConnection = async (MemberId) => {
 
     
 
-    // if (!localStream) {
-    //     await buildLocalStream();
-    // }
+   
 
     
     localStream.getTracks().forEach((track) => {
@@ -133,7 +139,7 @@ let createPeerConnection = async (MemberId) => {
 
     peerConnection.ontrack = (event) => {
         event.streams[0].getTracks().forEach((track) => {
-            console.log('!ALERT!the kind of track recieved is ', track.kind)
+            
             remoteStream.addTrack(track)
             remoteAudioTrack = remoteStream.getTracks().find(track => track.kind === 'audio')
             btnVolume.addEventListener('click',handleVolumeState);
@@ -161,9 +167,9 @@ let createOffer = async (memberId) => {
     let offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
 
-console.log("sending offer", offer )
+
     // sdp - offer
-  await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer, 'hostID': uid , 'waveType' : inputConfig }) }, memberId);
+  await client.sendMessageToPeer({ text: JSON.stringify({ 'type': 'offer', 'offer': offer, 'hostID': uid , 'waveType' : inputConfig ,'roomName':roomName}) }, memberId);
  
 }
 let addAnswer = async (answer) => {
@@ -179,8 +185,7 @@ let handleUserJoined = async (memberId) => {
     
     
     await createOffer(memberId);
-    //await sendHostInfo(memberId);
-
+   
 
     
     
@@ -220,7 +225,7 @@ let endMeeting = async ()=>
 }
 
 let init = async () => {
-
+ try{
     client = await AgoraRTM.createInstance(APP_ID);
     await client.login({ uid, token });
 
@@ -237,6 +242,12 @@ let init = async () => {
    
 
     stopLoader()
+
+ }
+ catch(error)
+ {
+    window.alert(error + '  :=> Please refresh')
+ }
    
   
 

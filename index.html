@@ -7,47 +7,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./style/index.css" />
   <link rel="stylesheet" href="./style/loader.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oooh+Baby&display=swap" rel="stylesheet">
   <title>WaveConnect</title>
 </head>
 
 <body>
-  <div class="container" id="cardContainer">
+
+  <div class="container" id ="cardContainer">
     <div id="theCard">
 
       <div id="formBox1" class="formBox">
-        <div class="introText1">Atleast We are not on the Lotus team</div>
+        <div class="breakingLine">
+          <div class="theBrokenLine"></div>
+        </div>
+        <div class="headerLine">
+          <img src="./images/logo voice (1).png" alt="logo" >
+          <div class="introText1 glowing-text">Wave Connect</div>
+        </div>
+        
         <div class="teamDiv">
-          <button class="bn37 pointFinger" id="createTeamBtn">Create Wave</button>
+          <button class="bn37 pointerOnHover" id="createTeamBtn">Create Wave</button>
         </div>
         <div class="teamDiv">
-          <button id="joinTeamBtn" class="bn37 pointFinger">Join Wave</button>
+          <button id="joinTeamBtn" class="bn37 pointerOnHover">Join Wave</button>
         </div>
       </div>
 
       <div id="formBox2" class="formBox login-box">
-        <button class="backButton pointFinger">Back</button>
+        <button class="backButton pointerOnHover">Back</button>
         <h2>Create Wave</h2>
 
         <form id="create-form">
           <div class="user-box">
             <input type="text" name="userName" required="true" />
-            <label>Host's name</label>
+            <label>Host</label>
           </div>
           <div class="user-box">
             <input type="text" name="meetingName" required="true" />
-            <label>Wave</label>
+            <label>Wave</label> 
           </div>
           <div class="radio-btns">
             <div>
-              <input type="radio" id="systemAudio" name="micSetting" value="systemAudio" checked class="pointFinger">
-              <label for="systemAudio" class="pointFinger">System Audio</label>
+              <input type="radio" id="mic" name="micSetting" value="mic" class="pointerOnHover" checked>
+              <label for="mic" class="pointerOnHover">Mic</label>
             </div>
             <div>
-              <input type="radio" id="mic" name="micSetting" value="mic" class="pointFinger">
-              <label for="mic" class="pointFinger">Mic</label>
+              <input type="radio" id="systemAudio" class="hiddenOnMobile pointerOnHover"name="micSetting" value="systemAudio" >
+              <label for="systemAudio" class="hiddenOnMobile pointerOnHover">System Audio</label>
             </div>
+            
           </div>
-          <a href="#" id="createMeeting" class="pointFinger">
+          <a href="#" id="createMeeting" class="pointerOnHover">
             <span></span>
             <span></span>
             <span></span>
@@ -58,7 +74,7 @@
       </div>
 
       <div class="login-box formBox" id="formBox3">
-        <button class="backButton pointFinger" id="">Back</button>
+          <button class="backButton pointerOnHover" id="">Back</button>
         <h2>Join Wave</h2>
         <form id="join-form">
           <div class="user-box">
@@ -67,9 +83,9 @@
           </div>
           <div class="user-box">
             <input type="text" name="meetingId" required="true" />
-            <label>Wave Info</label>
+            <label>Wave ID</label>
           </div>
-          <a herf="#" id='joinMeeting' class="pointFinger">
+          <a herf="#" id='joinMeeting' class="pointerOnHover">
             <span></span>
             <span></span>
             <span></span>
@@ -84,7 +100,7 @@
       </div>
     </div>
   </div>
-
+  
 </body>
 <script src="./js/index.js"></script>
 
