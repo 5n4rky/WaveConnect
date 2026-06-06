@@ -1,4 +1,4 @@
-let APP_ID = "7f7fb91b9abb498bbf6546299524e9fd";
+let APP_ID = "ee1bcec2aea147f1be2c8d071fcbf279";
 let token = null;
 let inputConfig;
 let localStream;
