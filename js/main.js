@@ -1,4 +1,4 @@
-let APP_ID = "d25bf915b9e44303928861d87f18f0ce";
+let APP_ID = "ee1bcec2aea147f1be2c8d071fcbf279";
 let token = null;
 let localStream;
 let remoteStream;
